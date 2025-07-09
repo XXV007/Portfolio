@@ -39,6 +39,53 @@ nav a:hover, nav a:focus {
     background: #e50914;
     color: #fff;
 }
+.resume-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.resume-dropdown-content {
+    display: none;
+    position: absolute;
+    background: #232323;
+    min-width: 160px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 1;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+}
+.resume-dropdown-content a {
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    text-decoration: none;
+    display: block;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+.resume-dropdown-content a:hover {
+    background: #e50914;
+    color: #fff;
+}
+.resume-dropdown:hover .resume-dropdown-content,
+.resume-dropdown:focus-within .resume-dropdown-content {
+    display: block;
+}
+.resume-btn {
+    background: #fff;
+    color: #e50914 !important;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    box-shadow: 0 2px 8px rgba(229,9,20,0.08);
+    transition: background 0.2s, color 0.2s;
+    padding: 0.5rem 1.2rem;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+}
+.resume-btn:hover, .resume-btn:focus {
+    background: #e50914;
+    color: #fff !important;
+}
 main {
     max-width: 1000px;
     margin: 2.5rem auto 3rem auto;
