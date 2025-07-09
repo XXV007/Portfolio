@@ -1,0 +1,151 @@
+body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #181818;
+    color: #fff;
+    min-height: 100vh;
+}
+header {
+    background: linear-gradient(90deg, #141414 60%, #e50914 100%);
+    color: #fff;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 0;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+}
+nav a:hover, nav a:focus {
+    background: #e50914;
+    color: #fff;
+}
+main {
+    max-width: 1000px;
+    margin: 2.5rem auto 3rem auto;
+    background: rgba(24,24,24,0.95);
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+}
+section {
+    margin-bottom: 2.5rem;
+    background: #232323;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(229,9,20,0.08);
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+section:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 32px rgba(229,9,20,0.18);
+}
+section h2 {
+    color: #e50914;
+    margin-bottom: 0.75rem;
+    font-size: 1.6rem;
+}
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #141414;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.5);
+}
+.profile-photo {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #e50914;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    background: #232323;
+}
+#hero {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeSlideUp 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.2s forwards;
+}
+@keyframes fadeSlideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@media (max-width: 700px) {
+    main {
+        padding: 1rem 0.5rem;
+    }
+    nav ul {
+        gap: 1rem;
+    }
+    section {
+        padding: 1rem 0.5rem 0.5rem 0.5rem;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.7);
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s;
+}
+.modal-content {
+    background: #232323;
+    color: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
+    max-width: 500px;
+    width: 90vw;
+    box-shadow: 0 8px 32px rgba(229,9,20,0.18);
+    position: relative;
+    animation: fadeSlideUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.close {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-size: 2rem;
+    color: #e50914;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.close:hover {
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .modal-content {
+        padding: 1rem 0.5rem;
+        max-width: 95vw;
+    }
+}
