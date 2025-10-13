@@ -103,7 +103,8 @@
     display: inline-block;
 }
 
-.resume-dropdown__button {
+.resume-dropdown__button,
+.resume-btn {
     background-color: var(--text);
     color: var(--primary);
     font-weight: var(--font-weight-bold);
@@ -114,17 +115,22 @@
     cursor: pointer;
     border: none;
     font-size: var(--font-size-base);
+    text-decoration: none;
+    display: inline-block;
 }
 
 .resume-dropdown__button:hover,
-.resume-dropdown__button:focus {
+.resume-dropdown__button:focus,
+.resume-btn:hover,
+.resume-btn:focus {
     background-color: var(--primary);
     color: var(--text);
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
 
-.resume-dropdown__content {
+.resume-dropdown__content,
+.resume-dropdown-content {
     display: none;
     position: absolute;
     top: 100%;
@@ -141,12 +147,16 @@
 
 .resume-dropdown:hover .resume-dropdown__content,
 .resume-dropdown:focus-within .resume-dropdown__content,
-.resume-dropdown--active .resume-dropdown__content {
+.resume-dropdown--active .resume-dropdown__content,
+.resume-dropdown:hover .resume-dropdown-content,
+.resume-dropdown:focus-within .resume-dropdown-content,
+.resume-dropdown.active .resume-dropdown-content {
     display: block;
     animation: dropdownFadeIn var(--transition-fast) ease-out;
 }
 
-.resume-dropdown__link {
+.resume-dropdown__link,
+.resume-dropdown-content a {
     color: var(--text);
     padding: var(--spacing-md) var(--spacing-lg);
     text-decoration: none;
@@ -156,7 +166,9 @@
 }
 
 .resume-dropdown__link:hover,
-.resume-dropdown__link:focus {
+.resume-dropdown__link:focus,
+.resume-dropdown-content a:hover,
+.resume-dropdown-content a:focus {
     background-color: var(--primary);
     color: var(--text);
 }

@@ -51,6 +51,7 @@ class PortfolioApp {
             // Setup core systems
             await this.setupConfiguration();
             await this.setupEventSystem();
+            await this.setupBasicNavigation(); // Add basic navigation first
             await this.setupComponents();
             await this.setupAnimations();
             await this.finishInitialization();
@@ -67,6 +68,33 @@ class PortfolioApp {
             ));
             throw error;
         }
+    }
+
+    /**
+     * Setup basic navigation as fallback
+     */
+    async setupBasicNavigation() {
+        // Ensure basic navigation works even if advanced components fail
+        const navMap = {
+            'experience': 'modal-experience',
+            'education': 'modal-education', 
+            'projects': 'modal-projects',
+            'skills': 'modal-skills',
+            'contact': 'modal-contact'
+        };
+
+        // Setup navigation handlers
+        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const hash = link.getAttribute('href').replace('#', '');
+                if (navMap[hash]) {
+                    e.preventDefault();
+                    EventBus.publish('modal:open', { modalId: navMap[hash] });
+                }
+            });
+        });
+
+        Logger.debug('Basic navigation setup completed');
     }
 
     /**
@@ -147,18 +175,74 @@ class PortfolioApp {
     async setupEventSystem() {
         // Modal events
         EventBus.subscribe('modal:open', (data) => {
-            const modal = this.components.get(data.modalId);
-            if (modal && modal.open) {
-                modal.open();
+            const modalElement = document.getElementById(data.modalId);
+            if (modalElement) {
+                // Close any currently open modals first
+                document.querySelectorAll('.modal').forEach(modal => {
+                    if (modal.style.display === 'flex') {
+                        modal.style.display = 'none';
+                        modal.setAttribute('aria-hidden', 'true');
+                    }
+                });
+
+                // Open the requested modal
+                modalElement.style.display = 'flex';
+                modalElement.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+
+                Logger.debug(`Modal opened: ${data.modalId}`);
+            } else {
+                Logger.warn(`Modal not found: ${data.modalId}`);
             }
         });
 
         EventBus.subscribe('modal:close-all', () => {
-            this.components.forEach((component, id) => {
-                if (id.startsWith('modal-') && component.isOpen && component.isOpen()) {
-                    component.close();
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (modal.style.display === 'flex') {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
                 }
             });
+            document.body.style.overflow = '';
+            Logger.debug('All modals closed');
+        });
+
+        // Setup modal close buttons
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', () => {
+                const modal = closeBtn.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                    Logger.debug(`Modal closed: ${modal.id}`);
+                }
+            });
+        });
+
+        // Setup modal backdrop clicks
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    modal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                    Logger.debug(`Modal closed via backdrop: ${modal.id}`);
+                }
+            });
+        });
+
+        // Setup escape key handling
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.modal[style*="flex"]');
+                if (openModal) {
+                    openModal.style.display = 'none';
+                    openModal.setAttribute('aria-hidden', 'true');
+                    document.body.style.overflow = '';
+                    Logger.debug(`Modal closed via escape: ${openModal.id}`);
+                }
+            }
         });
 
         // Component lifecycle events

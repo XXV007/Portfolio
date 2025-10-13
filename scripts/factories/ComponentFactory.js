@@ -1,5 +1,5 @@
-import { Modal, Navigation } from './UIComponents.js';
-import { BaseComponent } from './BaseComponent.js';
+import { Modal, Navigation } from '../components/UIComponents.js';
+import { BaseComponent } from '../components/BaseComponent.js';
 import Logger from '../core/Logger.js';
 
 /**
