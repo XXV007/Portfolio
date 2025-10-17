@@ -4,100 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vishnu Priyan Bhaskar | Portfolio</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <script type="module" src="scripts/main.js" defer></script>
+    <link rel="stylesheet" href="styles/style.css">
     <style>
-        /* Modal visibility fix */
+        /* Simple modal styles */
         .modal {
-            display: none !important;
-            position: fixed !important;
-            z-index: 10000 !important;
-            left: 0 !important;
-            top: 0 !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            background: rgba(0,0,0,0.7) !important;
-            align-items: center !important;
-            justify-content: center !important;
-            opacity: 1 !important;
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
         }
         
-        .modal[style*="flex"] {
-            display: flex !important;
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .modal-content {
-            background: #232323 !important;
-            color: #fff !important;
-            padding: 2rem 1.5rem !important;
-            border-radius: 14px !important;
-            max-width: 500px !important;
-            width: 90vw !important;
-            box-shadow: 0 8px 32px rgba(229,9,20,0.18) !important;
-            position: relative !important;
-            max-height: 80vh !important;
-            overflow-y: auto !important;
+            background-color: #232323;
+            color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
         }
         
         .close {
-            position: absolute !important;
-            top: 1rem !important;
-            right: 1.2rem !important;
-            font-size: 2.5rem !important;
-            color: #e50914 !important;
-            cursor: pointer !important;
-            font-weight: bold !important;
-            width: 50px !important;
-            height: 50px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            border-radius: 50% !important;
-            transition: all 0.3s ease !important;
-            z-index: 10001 !important;
-            border: 2px solid #e50914 !important;
-            background: rgba(229, 9, 20, 0.1) !important;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #e50914;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(229, 9, 20, 0.1);
+            border: 2px solid #e50914;
         }
         
-        .close:hover,
-        .close:focus {
-            color: #fff !important;
-            background-color: #e50914 !important;
-            transform: scale(1.2) !important;
-            border-color: #fff !important;
-        }
-        
-        /* Emergency close button */
-        #emergency-close {
-            position: fixed !important;
-            top: 20px !important;
-            right: 20px !important;
-            width: 60px !important;
-            height: 60px !important;
-            background: #e50914 !important;
-            color: white !important;
-            border: none !important;
-            border-radius: 50% !important;
-            font-size: 2rem !important;
-            cursor: pointer !important;
-            z-index: 20000 !important;
-            display: none !important;
-            align-items: center !important;
-            justify-content: center !important;
-            font-weight: bold !important;
-            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.4) !important;
-        }
-        
-        #emergency-close:hover {
-            background: #ff0000 !important;
-            transform: scale(1.1) !important;
+        .close:hover {
+            background: #e50914;
+            color: white;
         }
     </style>
+    <script>
+        function openModal(modalId) {
+            console.log('Opening modal:', modalId);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId) {
+            console.log('Closing modal:', modalId);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function closeAllModals() {
+            console.log('Closing all modals');
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.classList.remove('show');
+            });
+            document.body.style.overflow = '';
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Simple portfolio loaded');
+            
+            // Setup navigation
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.startsWith('#') && href !== '#hero') {
+                        e.preventDefault();
+                        const section = href.replace('#', '');
+                        const modalId = 'modal-' + section;
+                        openModal(modalId);
+                    }
+                });
+            });
+            
+            // Setup close buttons
+            document.querySelectorAll('.close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // Close on backdrop click
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeAllModals();
+                }
+            });
+            
+            // Setup resume dropdown
+            const resumeDropdown = document.querySelector('.resume-dropdown');
+            if (resumeDropdown) {
+                const resumeBtn = resumeDropdown.querySelector('.resume-btn');
+                const resumeContent = resumeDropdown.querySelector('.resume-dropdown-content');
+                
+                if (resumeBtn && resumeContent) {
+                    // Toggle dropdown on click
+                    resumeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        resumeDropdown.classList.toggle('active');
+                    });
+                    
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(e) {
+                        if (!resumeDropdown.contains(e.target)) {
+                            resumeDropdown.classList.remove('active');
+                        }
+                    });
+                    
+                    // Keyboard support
+                    resumeBtn.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            resumeDropdown.classList.toggle('active');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
 </head>
 <body>
-    <!-- Emergency close button -->
-    <button id="emergency-close" title="Emergency Close (ESC)" onclick="closeAllModals()">&times;</button>
-    
     <header>
         <h1>Vishnu Priyan Bhaskar</h1>
         <nav>
@@ -137,104 +202,90 @@
             <h2>Resume</h2>
             <a href="assets/resume.pdf" target="_blank" style="display:inline-block;padding:0.7rem 1.5rem;background:#222;color:#fff;border-radius:6px;text-decoration:none;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:background 0.2s;">View My Resume (PDF)</a>
         </section>
-        <!-- Modals for popups -->
-        <div id="modal-experience" class="modal"><div class="modal-content"><span class="close" data-modal="modal-experience">&times;</span>
-            <h2>Experience</h2>
-            <ul style="list-style:none;padding:0;">
-                <li style="margin-bottom:1.5rem;"><strong>Kentish Publishing Company</strong> – Game Designer (Publishing Cycle 2025)<br><em>May 2025 – Present | Remote</em><br><span>Designing narrative games with a focus on empathy, transformation, and inclusive design.</span></li>
-                <li style="margin-bottom:1.5rem;"><strong>California State University, Fullerton</strong> – Graduate Student Ambassador (CS)<br><em>Apr 2025 – Present | Hybrid</em><br><span>Researching and improving university web portals for better digital accessibility and usability.</span></li>
-                <li style="margin-bottom:1.5rem;"><strong>Graduate Teaching Assistant</strong><br><em>Oct 2024 – May 2025 | United States</em><br><span>Supported instruction in core CS courses, conducted labs, and developed tutorials.</span></li>
-                <li style="margin-bottom:1.5rem;"><strong>Information Technology Assistant</strong><br><em>Sep 2024 – Jan 2025 | United States</em><br><span>Provided technical support and gained experience with educational technologies.</span></li>
-                <li style="margin-bottom:1.5rem;"><strong>Computer Science Tutor</strong><br><em>2022 – 2024 | India</em><br><span>Delivered personalized tutoring in programming, algorithms, and math.</span></li>
-            </ul>
-        </div></div>
-        <div id="modal-education" class="modal"><div class="modal-content"><span class="close" data-modal="modal-education">&times;</span>
-            <h2>Education</h2>
-            <ul style="list-style:none;padding:0;">
-                <li style="margin-bottom:1.2rem;"><strong>California State University, Fullerton</strong><br>Master of Science (MS), Computer Science<br>Aug 2024 | GPA: 3.7/4<br><span style="color:#ff9900;font-size:0.98em;">Expected Graduation: Summer 2026</span></li>
-                <li><strong>SRM IST Chennai</strong><br>Bachelor of Technology (BTech), Computer Science<br>Sep 2020 – May 2024 | GPA: 8.9/10</li>
-            </ul>
-        </div></div>
-        <div id="modal-projects" class="modal" style="align-items: flex-start;"><div class="modal-content" style="max-width:900px;width:90vw;height:90vh;overflow-y:auto;box-sizing:border-box;">
-            <span class="close" data-modal="modal-projects">&times;</span>
-            <h2>Projects</h2>
-            <p style="color:#b3b3b3;margin-bottom:1.2rem;">All projects below were fully implemented, tested, and documented by me. I handled the complete development lifecycle: requirements gathering, design, coding, debugging, testing, and deployment. My responsibilities included building user interfaces, integrating APIs, ensuring accessibility, and optimizing for performance and usability.</p>
-            <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
-                <!-- AgriPal -->
-                <div style="background:#232323;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 8px rgba(229,9,20,0.08);color:#fff;">
-                    <h3 style="color:#ff9900;margin-bottom:0.3rem;">AgriPal – Smart Budgeting for Farmers</h3>
-                    <div style="font-size:0.98rem;margin-bottom:0.2rem;"><em>Jan 2025 – Jun 2025 | California State University, Fullerton</em></div>
-                    <p style="margin-bottom:0.7rem;">AgriPal is an Android app designed to help farmers manage agricultural income, expenses, and savings. It promotes financial literacy in rural and semi-urban communities by providing an intuitive and secure digital budgeting tool.</p>
-                    <ul style="margin-bottom:0.7rem;padding-left:1.1em;">
-                        <li>User Authentication with Firebase Auth</li>
-                        <li>Income & Expense Logging (by date, category, description)</li>
-                        <li>Real-Time Budgeting Dashboard with Analytics</li>
-                        <li>Seasonal & Monthly Views for Farming Cycles</li>
-                        <li>Cloud Sync via Firebase Realtime Database</li>
-                        <li>Dark Mode with Adaptive UI</li>
-                        <li>Offline Mode Support (optional)</li>
-                    </ul>
-                    <div style="margin-bottom:0.5rem;"><strong>Tech Stack:</strong> Kotlin, Jetpack Compose, Firebase, Android Studio, Material Design 3</div>
-                    <div style="font-size:0.95rem;color:#b3b3b3;">Impact: Empowers local farmers to track finances, reduce wasteful spending, and make informed decisions.</div>
-                    <div style="margin-top:0.5rem;">
-                        <span style="background:#ff9900;color:#232323;padding:0.2em 0.7em;border-radius:5px;font-size:0.9em;margin-right:0.3em;">Kotlin</span>
-                        <span style="background:#ff9900;color:#232323;padding:0.2em 0.7em;border-radius:5px;font-size:0.9em;">Android Development</span>
-                    </div>
+        <!-- Modals -->
+        <div id="modal-experience" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Experience</h2>
+                <ul style="list-style:none;padding:0;">
+                    <li style="margin-bottom:1.5rem;"><strong>Kentish Publishing Company</strong> – Game Designer (Publishing Cycle 2025)<br><em>May 2025 – Present | Remote</em><br><span>Designing narrative games with a focus on empathy, transformation, and inclusive design.</span></li>
+                    <li style="margin-bottom:1.5rem;"><strong>California State University, Fullerton</strong> – Graduate Student Ambassador (CS)<br><em>Apr 2025 – Present | Hybrid</em><br><span>Researching and improving university web portals for better digital accessibility and usability.</span></li>
+                    <li style="margin-bottom:1.5rem;"><strong>Graduate Teaching Assistant</strong><br><em>Oct 2024 – May 2025 | United States</em><br><span>Supported instruction in core CS courses, conducted labs, and developed tutorials.</span></li>
+                    <li style="margin-bottom:1.5rem;"><strong>Information Technology Assistant</strong><br><em>Sep 2024 – Jan 2025 | United States</em><br><span>Provided technical support and gained experience with educational technologies.</span></li>
+                    <li style="margin-bottom:1.5rem;"><strong>Computer Science Tutor</strong><br><em>2022 – 2024 | India</em><br><span>Delivered personalized tutoring in programming, algorithms, and math.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="modal-education" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Education</h2>
+                <ul style="list-style:none;padding:0;">
+                    <li style="margin-bottom:1.2rem;"><strong>California State University, Fullerton</strong><br>Master of Science (MS), Computer Science<br>Aug 2024 | GPA: 3.7/4<br><span style="color:#ff9900;font-size:0.98em;">Expected Graduation: Summer 2026</span></li>
+                    <li><strong>SRM IST Chennai</strong><br>Bachelor of Technology (BTech), Computer Science<br>Sep 2020 – May 2024 | GPA: 8.9/10</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="modal-projects" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Projects</h2>
+                <p style="color:#b3b3b3;margin-bottom:1.2rem;">All projects below were fully implemented, tested, and documented by me.</p>
+                
+                <div style="margin-bottom:2rem;padding:1rem;background:#333;border-radius:8px;">
+                    <h3 style="color:#ff9900;margin-bottom:0.5rem;">AgriPal – Smart Budgeting for Farmers</h3>
+                    <p style="margin-bottom:0.5rem;"><em>Jan 2025 – Jun 2025 | California State University, Fullerton</em></p>
+                    <p style="margin-bottom:0.5rem;">Android app designed to help farmers manage agricultural income, expenses, and savings. Promotes financial literacy in rural communities.</p>
+                    <p><strong>Tech Stack:</strong> Kotlin, Jetpack Compose, Firebase, Android Studio</p>
                 </div>
-                <!-- Crash-Aware Kernel Modules -->
-                <div style="background:#232323;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 8px rgba(229,9,20,0.08);color:#fff;">
-                    <h3 style="color:#ff9900;margin-bottom:0.3rem;">Crash-Aware Kernel Modules with Dynamic State Checkpointing</h3>
-                    <div style="font-size:0.98rem;margin-bottom:0.2rem;"><em>Feb 2025 – May 2025 | California State University, Fullerton</em></div>
-                    <p style="margin-bottom:0.7rem;">Explored how kernel modules can automatically save and restore their state after a crash, reducing downtime and improving OS reliability without a full reboot. Ideal for embedded and real-time systems, this project lays the foundation for safer dynamic updates and resilient OS design.</p>
-                    <ul style="margin-bottom:0.7rem;padding-left:1.1em;">
-                        <li>Automatic state save/restore for kernel modules</li>
-                        <li>Crash recovery without full OS reboot</li>
-                        <li>Supports embedded and real-time systems</li>
-                        <li>Foundation for resilient OS design</li>
-                    </ul>
-                    <div style="margin-bottom:0.5rem;"><strong>Skills:</strong> Operating Systems, Kernel Modules, Checkpointing, Crash Recovery, System Design, Reliability Engineering</div>
+
+                <div style="margin-bottom:2rem;padding:1rem;background:#333;border-radius:8px;">
+                    <h3 style="color:#ff9900;margin-bottom:0.5rem;">Crash-Aware Kernel Modules</h3>
+                    <p style="margin-bottom:0.5rem;"><em>Feb 2025 – May 2025 | California State University, Fullerton</em></p>
+                    <p style="margin-bottom:0.5rem;">Kernel modules that automatically save and restore state after crashes, improving OS reliability.</p>
+                    <p><strong>Skills:</strong> Operating Systems, Kernel Modules, System Design</p>
                 </div>
-                <!-- RGBColorMixer -->
-                <div style="background:#232323;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 8px rgba(229,9,20,0.08);color:#fff;">
-                    <h3 style="color:#ff9900;margin-bottom:0.3rem;">RgbColorMixer</h3>
-                    <div style="font-size:0.98rem;margin-bottom:0.2rem;"><em>Jan 2025 – May 2025</em></div>
-                    <p style="margin-bottom:0.7rem;">Developed an Android app that allows users to create custom colors by adjusting RGB values through sliders and text fields. Features real-time color preview, synchronized controls, reset button, and responsive layouts for both portrait and landscape orientations.</p>
-                    <ul style="margin-bottom:0.7rem;padding-left:1.1em;">
-                        <li>Real-time color preview</li>
-                        <li>Adjust RGB via sliders and text fields</li>
-                        <li>Reset button for instant clearing</li>
-                        <li>Responsive UI for all orientations</li>
-                    </ul>
-                    <div style="margin-bottom:0.5rem;"><strong>Skills:</strong> Virtual Computing, Kotlin, Algorithms</div>
-                </div>
-                <!-- MentalWell Chatbot -->
-                <div style="background:#232323;padding:1.2rem 1rem;border-radius:12px;box-shadow:0 2px 8px rgba(229,9,20,0.08);color:#fff;">
-                    <h3 style="color:#ff9900;margin-bottom:0.3rem;">MentalWell Chatbot for Mental Health Support and Well Being</h3>
-                    <div style="font-size:0.98rem;margin-bottom:0.2rem;"><em>Nov 2023 – May 2024 | SRM University</em></div>
-                    <p style="margin-bottom:0.7rem;">Developed a mental health support chatbot providing empathetic, personalized, and confidential assistance. Utilizes advanced NLP (FastText, BERT, GPT, BiLSTM-Attention) for sentiment analysis, psychoeducation, coping strategies, and mood tracking. Aims to break stigma and bridge gaps in traditional care.</p>
-                    <ul style="margin-bottom:0.7rem;padding-left:1.1em;">
-                        <li>24/7 support in a safe, anonymous space</li>
-                        <li>Sentiment analysis and mood tracking</li>
-                        <li>Psychoeducation and coping strategies</li>
-                        <li>Personalized, ethical, and continuous learning</li>
-                    </ul>
-                    <div style="margin-bottom:0.5rem;"><strong>Skills:</strong> Hugging Face, AI, NLP, Machine Learning</div>
+
+                <div style="margin-bottom:2rem;padding:1rem;background:#333;border-radius:8px;">
+                    <h3 style="color:#ff9900;margin-bottom:0.5rem;">MentalWell Chatbot</h3>
+                    <p style="margin-bottom:0.5rem;"><em>Nov 2023 – May 2024 | SRM University</em></p>
+                    <p style="margin-bottom:0.5rem;">Mental health support chatbot using advanced NLP for sentiment analysis and personalized assistance.</p>
+                    <p><strong>Skills:</strong> AI, NLP, Machine Learning, Python</p>
                 </div>
             </div>
-        </div></div>
-        <div id="modal-skills" class="modal"><div class="modal-content"><span class="close" data-modal="modal-skills">&times;</span>
-            <h2>Skills</h2>
-            <ul style="columns:2;max-width:600px;margin:auto;list-style:square inside;">
-                <li>Python</li><li>Machine Learning</li><li>NLP</li><li>Data Visualization</li><li>Game Design</li><li>Game Development</li><li>Operating Systems</li><li>Networking</li><li>Statistical Data Analysis</li><li>Full-Stack Development</li><li>Git</li><li>Problem Solving</li>
-            </ul>
-        </div></div>
-        <div id="modal-contact" class="modal"><div class="modal-content"><span class="close" data-modal="modal-contact">&times;</span>
-            <h2>Contact</h2>
-            <p>Email: <a href="mailto:vishnumax03@gmail.com" style="color:#e50914;">vishnumax03@gmail.com</a></p>
-            <p>Location: Los Angeles, California, United States</p>
-            <p>LinkedIn: <a href="https://www.linkedin.com/in/vishnu-priyan-bhaskar-7bab71265/" style="color:#e50914;">linkedin.com/in/vishnu-priyan-bhaskar-7bab71265</a></p>
-            <p>GitHub: <a href="https://github.com/XXV007" style="color:#e50914;">github.com/XXV007</a></p>
-        </div></div>
+        </div>
+
+        <div id="modal-skills" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Skills</h2>
+                <ul style="columns:2;list-style:square inside;">
+                    <li>Python</li>
+                    <li>Machine Learning</li>
+                    <li>NLP</li>
+                    <li>Data Visualization</li>
+                    <li>Game Design</li>
+                    <li>Operating Systems</li>
+                    <li>Networking</li>
+                    <li>Full-Stack Development</li>
+                    <li>Git</li>
+                    <li>Problem Solving</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="modal-contact" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Contact</h2>
+                <p>Email: <a href="mailto:vishnumax03@gmail.com" style="color:#e50914;">vishnumax03@gmail.com</a></p>
+                <p>Location: Los Angeles, California, United States</p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/vishnu-priyan-bhaskar-7bab71265/" style="color:#e50914;">linkedin.com/in/vishnu-priyan-bhaskar-7bab71265</a></p>
+                <p>GitHub: <a href="https://github.com/XXV007" style="color:#e50914;">github.com/XXV007</a></p>
+            </div>
+        </div>
     </main>
     <footer>
         <p>&copy; 2025 Vishnu Priyan Bhaskar</p>

@@ -66,7 +66,8 @@ nav a:hover, nav a:focus {
     color: #fff;
 }
 .resume-dropdown:hover .resume-dropdown-content,
-.resume-dropdown:focus-within .resume-dropdown-content {
+.resume-dropdown:focus-within .resume-dropdown-content,
+.resume-dropdown.active .resume-dropdown-content {
     display: block;
 }
 .resume-btn {
